@@ -83,7 +83,7 @@ def make_script(program_type, cmd, queue, name=None, project=None, email=None, n
                 env_path=None):
     # https://wiki.srce.hr/display/RKI/Pokretanje+i+upravljanje+poslovima#Pokretanjeiupravljanjeposlovima-Resursi
     # Fix values
-    if num_threads and num_threads <= 1:
+    if num_threads == '1':
         num_threads = None
     #
     script = '#!/bin/bash\n\n'
