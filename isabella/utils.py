@@ -144,9 +144,17 @@ def read_obrada_data():
 
 
 def read_posao_data(cwd=None):
-    p_file = os.path.join(cd, 'posao.status') if cwd else 'posao.status'
+    p_file = os.path.join(cwd, 'posao.status') if cwd else 'posao.status'
     with open(p_file, 'r') as _in:
         return dict(tuple(x.strip() for x in l.split(':', 1)) for l in _in)
+
+
+def on_finish_job():
+    d = is_obrada_finished()
+    if d:
+        obrada_dir, obrada_data = d
+        send_post_email(obrada_data)
+        collect_obrada_output(obrada_dir, obrada_data)
 
 
 def is_obrada_finished():
