@@ -64,7 +64,8 @@ def simple_run_script(program_type, cwd, job_desc,
 
     #
     script = make_script(program_type, program.program + ' ' + cmd, queue.queue,
-                         name=name, project=project, email=email, num_threads=num_threads,
+                         name=name, project=project, email=email,
+                         num_threads=(num_threads if max_num_threads > 1 else None),
                          env_path=program.directory)
 
     write_str_in_file(os.path.join(cwd, 'job_script'), script)
@@ -82,10 +83,6 @@ def simple_run_script(program_type, cwd, job_desc,
 def make_script(program_type, cmd, queue, name=None, project=None, email=None, num_threads=None,
                 env_path=None):
     # https://wiki.srce.hr/display/RKI/Pokretanje+i+upravljanje+poslovima#Pokretanjeiupravljanjeposlovima-Resursi
-    # Fix values
-    if num_threads == '1':
-        num_threads = None
-    #
     script = '#!/bin/bash\n\n'
     for val, flag in ((name, 'N'), (project, 'P'), (num_threads, 'pe *mpisingle'), (queue, 'q')):
         if val:
