@@ -1,0 +1,9 @@
+ISABELLA_DIR=/home/aturudic/Isabella/isabella
+
+# PATH
+export PATH=$ISABELLA_DIR/bin:$PATH
+
+# PYTHONPATH
+# Treba za: yaml
+export PYTHONPATH=$HOME/.local/lib/python3.6/site-packages:$PYTHONPATH
+export PYTHONPATH=$ISABELLA_DIR:$PYTHONPATH
