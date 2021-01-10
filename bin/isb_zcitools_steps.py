@@ -37,10 +37,10 @@ def process(step_names=None, **arguments):
             _dir = job.get('directory')
             if _dir:
                 cwd = join(step_name, _dir)
-                name = f"{dir_parts[-1]}/{_dir}"
+                name = f"{dir_parts[-1]}-{_dir}"
             else:
                 cwd = step_name
-                name = '/'.join(dir_parts[-2:])
+                name = '-'.join(dir_parts[-2:])
             jobs.append(cwd)
             method(program, cwd, job, name=name, **arguments)
 
