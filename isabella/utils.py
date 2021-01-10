@@ -133,7 +133,7 @@ def read_obrada_data():
     while True:
         o_file = os.path.join(_dir, 'obrada.status')
         if os.path.isfile(o_file):
-            with open('obrada.status', 'r') as _in:
+            with open(o_file, 'r') as _in:
                 data = dict(tuple(x.strip() for x in line.split(':', 1)) for line in _in if line)
                 return _dir, data
         #
