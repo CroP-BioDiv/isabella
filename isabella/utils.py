@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 from .environment_desc import get_program_and_queue, get_files_to_zip
 _ISABELLA_MODULE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -72,8 +73,10 @@ def simple_run_script(program_type, cwd, job_desc,
         print(cwd)
         print(script)
     else:
-        print(f'cd {cwd}; qsub job_script')
-        # subprocess.run(['qsub', 'job_script'], cwd=cwd)
+        if shutil.which('qsub'):
+            subprocess.run(['qsub', 'job_script'], cwd=cwd)
+        else:
+            print(f'cd {cwd}; qsub job_script')
 
 
 def make_script(program_type, cmd, queue, name=None, project=None, email=None, num_threads=None,
