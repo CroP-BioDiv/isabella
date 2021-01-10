@@ -109,9 +109,9 @@ export PATH={_ISABELLA_BIN_DIR}:$PATH
 
     script += f"""
 # Run script
-job_pre_run.py {program_type}
+python3 job_pre_run.py {program_type}
 {cmd}
-job_post_run.py
+python3 job_post_run.py
 """
 
     return script
