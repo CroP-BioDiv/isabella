@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os.path
 import datetime
 from isabella.utils import is_obrada_finished, send_post_email, collect_obrada_output

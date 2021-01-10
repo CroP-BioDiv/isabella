@@ -24,14 +24,14 @@ _QUEUES = [
     # 128 GB RAM
     # 1 x 1 TB diskovnog prostora
     _Queue('p28.q', 'single', 1, 128, 7, ('AVX2',)),
-    _Queue('p28-mpisingle', 'threads', 28, 128, 7, ('AVX2',)),
-    _Queue('p28-mpi', 'mpi', 28, 128, 7, ('AVX2',)),
-    _Queue('p28-mpifull', 'mpifull', 28, 128, 7, ('AVX2',)),
+    _Queue('p28.q', 'threads', 28, 128, 7, ('AVX2',)),
+    _Queue('p28.q', 'mpi', 28, 128, 7, ('AVX2',)),
+    _Queue('p28.q', 'mpifull', 28, 128, 7, ('AVX2',)),
     #
     _Queue('p28-long.q', 'single', 28, 128, 30, ('AVX2',)),
-    _Queue('p28-mpisingle-long', 'threads', 28, 128, 30, ('AVX2',)),
-    _Queue('p28-mpi-long', 'mpi', 28, 128, 30, ('AVX2',)),
-    _Queue('p28-mpifull-long', 'mpifull', 28, 128, 30, ('AVX2',)),
+    _Queue('p28-long.q', 'threads', 28, 128, 30, ('AVX2',)),
+    _Queue('p28-long.q', 'mpi', 28, 128, 30, ('AVX2',)),
+    _Queue('p28-long.q', 'mpifull', 28, 128, 30, ('AVX2',)),
 
     # ToDo: Trebaju li nam uopce drugi redovi?
 ]
