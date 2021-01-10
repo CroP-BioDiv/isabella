@@ -14,4 +14,4 @@ with open('posao.status', 'w') as _out:
     # ToDo: Jos neka varijable?
     for env in ('JOB_ID', 'QUEUE', 'HOSTNAME', 'JOB_NAME', 'NSLOTS',
                 'SGE_TASK_ID', 'SGE_O_HOST', 'SGE_O_PATH', 'SGE_O_WORKDIR', 'PE_HOSTFILE'):
-        _out.write(f"{env}: {os.environment.get(env, '')}\n")
+        _out.write(f"{env}: {os.environ.get(env, '')}\n")
