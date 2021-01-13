@@ -104,12 +104,15 @@ class Processing:
         now = str(datetime.now())
         for j_dir, job_data in self.job_directories_with_data():
             # Vrijeme
-            lasted = lasted_str(job_data['started'], job_data.get('ended', now))
+            ended = job_data.get('ended')
+            lasted = lasted_str(job_data['started'], ended or now)
+
             # Program specific
-            prog_spec = ''
-            program_desc = get_program_desc(job_data['program_type'])
-            if program_desc:
-                prog_spec = program_desc.status_string(j_dir)
+            prog_spec = 'finished'
+            if not ended:
+                program_desc = get_program_desc(job_data['program_type'])
+                if program_desc:
+                    prog_spec = program_desc.status_string(j_dir)
             if prog_spec:
                 print(f"{j_dir}: {lasted} - {prog_spec}")
             else:
