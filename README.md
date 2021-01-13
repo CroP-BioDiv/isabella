@@ -10,8 +10,8 @@ Motivi projekta:
 
 Imenovanja koja se koriste:
 * **program**: executable analize,
-* **posao**: job u SGE-u,
-* **obrada**: jedan ili više poslova koji rade 'cjelinu'.
+* **posao** / **job**: job u SGE-u,
+* **obrada** / **processing**: jedan ili više poslova koji rade 'cjelinu'.
 
 ## Skripte
 

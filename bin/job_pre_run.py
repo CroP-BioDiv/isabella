@@ -4,11 +4,12 @@ import os
 import sys
 import datetime
 from isabella.utils import send_pre_email
+from isabella.processing import JOB_FILENAME
 
 # Note: posao.status is created after checking for mailing
 send_pre_email()
 
-with open('posao.status', 'w') as _out:
+with open(JOB_FILENAME, 'w') as _out:
     _out.write(f'program_type: {sys.argv[1]}\n')
     _out.write(f'started: {datetime.datetime.now()}\n')
     # ToDo: Jos neka varijable?

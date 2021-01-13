@@ -12,6 +12,11 @@ _ISABELLA_MAIN_DIR = '/home/aturudic/Isabella'
 _ISABELLA_PROJET_DIR = join(_ISABELLA_MAIN_DIR, 'isabella')
 _ISABELLA_PROGRAMS_DIR = join(_ISABELLA_MAIN_DIR, 'programs')
 
+
+class IsabellaException(Exception):
+    pass
+
+
 # Values:
 #  - parallel: single, threads, mpi, mpifull
 
@@ -99,22 +104,24 @@ def get_program_and_queue(program, num_threads, single_cmd, threads_cmd):
     return (program, queue) if queue else (None, None)
 
 
-def get_program_method(program):
-    if program == 'raxml':
-        from .utils import simple_run_script
-        return simple_run_script
-    #
-    print(f'Warning: no method for program {program}!')
+# ---------------------------------------------------------
+# Program description has to implement this interface
+# ---------------------------------------------------------
+class ProgramDescription:
+    @staticmethod
+    def create_scripts_method():
+        pass
+
+    @staticmethod
+    def files_to_zip():
+        raise NotImplementedError(f'Method files_to_zip() is not implemented!')
+
+    @staticmethod
+    def status_string(job_directory):
+        return ''
 
 
-_PROGRAM_FILES_TO_ZIP = dict(
-    raxml=('RAxML_bestTree.raxml_output', 'RAxML_bipartitionsBranchLabels.raxml_output',
-           'RAxML_bipartitions.raxml_output', 'RAxML_bootstrap.raxml_output', 'RAxML_info.raxml_output'),
-)
-
-
-def get_files_to_zip(program):
-    files = _PROGRAM_FILES_TO_ZIP.get(program)
-    if not files:
-        print(f'Warning: no files to zip for program type {program}!')
-    return files or []
+def get_program_desc(program_type):
+    if program_type == 'raxml':
+        from .raxml import RAxML
+        return RAxML

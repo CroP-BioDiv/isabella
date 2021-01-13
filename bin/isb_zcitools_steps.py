@@ -2,8 +2,9 @@
 
 import os.path
 import json
-from isabella.environment_desc import get_program_method
-from isabella.utils import check_is_directory_processing, standard_arguments, write_obrada_status
+from isabella.environment_desc import get_program_desc
+from isabella.utils import standard_arguments
+from isabella.processing import check_is_directory_processing, write_processing_status
 
 
 def process(step_names=None, **arguments):
@@ -28,7 +29,10 @@ def process(step_names=None, **arguments):
             print(f"Warning: step {step_name}: cluster run info doesn't have specified program to run!")
             continue
 
-        method = get_program_method(program)
+        program_desc = get_program_desc(program)
+        if not program_desc:
+            continue
+        method = method.create_scripts_method()
         if not method:
             continue
 
@@ -44,7 +48,7 @@ def process(step_names=None, **arguments):
             jobs.append(cwd)
             method(program, cwd, job, name=name, **arguments)
 
-    write_obrada_status(jobs, arguments.get('email'))
+    write_processing_status(jobs, arguments.get('email'))
 
 
 if __name__ == '__main__':
