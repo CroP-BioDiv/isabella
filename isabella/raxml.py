@@ -1,9 +1,13 @@
 import re
 import os.path
 from collections import deque
-from .environment_desc import ProgramDescription
+from .environment_desc import ProgramDescription, lasted_seconds
 
+# Regex for these lines
+# Bootstrap[995]: Time 125.459517 seconds, bootstrap likelihood -1151493.001498, best rearrangement setting 9
+# Overall Time for 1000 Rapid Bootstraps 119924.468086 seconds
 _bootstrap_iteration = re.compile(r'^Bootstrap\[(\d+)\]')
+_overall_time = re.compile(r'Rapid Bootstraps (\d+)')  # Take only seconds
 
 
 class RAxML:
@@ -24,11 +28,16 @@ class RAxML:
         r_o = os.path.join(job_directory, 'RAxML_info.raxml_output')
         if os.path.isfile(r_o):
             with open(r_o, 'r') as _in:
-                last_lines = deque(_in, 3)
-            while last_lines:
-                r_o = os.path.join(job_directory, 'RAxML_info.raxml_output')
-                m = _bootstrap_iteration.search(last_lines.pop())
+                last_lines = deque(_in, 5)
+            # Check lines from the end
+            lines = reversed(last_lines)
+            for line in lines:
+                m = _bootstrap_iteration.search(line)
                 if m:
                     num_iter = m.group(1)
-                    return f"iteration {num_iter}/{num_iterations}"
+                    return f"on iteration {num_iter}/{num_iterations}"
+                m = _overall_time.search(line)
+                if m:
+                    seconds = lasted_seconds(int(m.group(1)))
+                    return f"bootstrap time {seconds}"
         return ''

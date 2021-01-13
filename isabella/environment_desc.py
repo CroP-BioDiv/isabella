@@ -17,6 +17,27 @@ class IsabellaException(Exception):
     pass
 
 
+def lasted_seconds(lasted):
+    # Returns string (of length 7) that describes passsed time
+    parts = []
+    days = lasted // (24 * 60 * 60)
+    if days:
+        parts.append(f'{days:2}d')
+    #
+    rest = lasted - days * 24 * 3600
+    hours = rest // 3600
+    if hours:
+        parts.append(f'{hours:02}h' if parts else f'{hours:2}h')
+    #
+    rest -= hours * 3600
+    mins = rest // 60
+    parts.append(f'{mins:02}m')
+    #
+    secs = rest - mins * 60
+    parts.append(f'{secs:02}s')
+    return ':'.join(parts[:2])
+
+
 # Values:
 #  - parallel: single, threads, mpi, mpifull
 

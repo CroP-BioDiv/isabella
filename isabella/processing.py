@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from .environment_desc import IsabellaException, get_program_desc
+from .environment_desc import IsabellaException, lasted_seconds, get_program_desc
 
 PROCESSING_FILENAME = 'obrada.status'
 JOB_FILENAME = 'posao.status'
@@ -34,6 +34,7 @@ def lasted_str(started, ended):
     s = _datetime_fromiso(started).timestamp()
     e = _datetime_fromiso(ended).timestamp()
     lasted = int(e - s)  # Just seconds
+    return lasted_seconds(lasted)
     #
     parts = []
     days = lasted // (24 * 60 * 60)
