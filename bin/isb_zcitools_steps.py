@@ -32,7 +32,7 @@ def process(step_names=None, **arguments):
         program_desc = get_program_desc(program)
         if not program_desc:
             continue
-        method = method.create_scripts_method()
+        method = program_desc.create_scripts_method()
         if not method:
             continue
 
@@ -46,7 +46,7 @@ def process(step_names=None, **arguments):
                 cwd = step_name
                 name = '-'.join(dir_parts[-2:])
             jobs.append(cwd)
-            method(program, cwd, job, name=name, **arguments)
+            method(program, cwd, job, name=name, job_additional_params=program_desc.get_job_additional_params(job), **arguments)
 
     write_processing_status(jobs, arguments.get('email'))
 

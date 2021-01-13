@@ -122,8 +122,10 @@ class Processing:
         files_to_zip = []
         for j_dir, job_data in self.job_directories_with_data():
             program_desc = get_program_desc(job_data['program_type'])
-            if program_desc and program_desc.files_to_zip():
-                files_to_zip.extend(os.path.join(j_dir, f) for f in program_desc.files_to_zip())
+            if program_desc:
+                fz = program_desc.files_to_zip(job_data)
+                if fz:
+                    files_to_zip.extend(os.path.join(j_dir, f) for f in fz)
             files_to_zip.append(os.path.join(j_dir, JOB_FILENAME))
         #
         with ZipFile(PROCESSING_OUTPUT_FILENAME, 'w', compression=ZIP_DEFLATED) as output:

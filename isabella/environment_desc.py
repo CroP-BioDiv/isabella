@@ -63,14 +63,19 @@ _QUEUES = [
 ]
 
 # Description of installed programs
-_Program = namedtuple('_Program', 'program, directory, parallel, flags')
+_Program = namedtuple('_Program', 'program, directory, parallel, flags, modules')
 
 _RAxML_DIR = join(_ISABELLA_PROGRAMS_DIR, 'RAxML', 'bin')
+_MrBayes_DIR = join(_ISABELLA_PROGRAMS_DIR, 'MrBayes', 'bin')
 
 _PROGRAMS = dict(
     raxml=[
-        _Program('raxmlHPC-AVX2', _RAxML_DIR, 'single', ('AVX2',)),
-        _Program('raxmlHPC-PTHREADS-AVX2', _RAxML_DIR, 'threads', ('AVX2',))
+        _Program('raxmlHPC-AVX2', _RAxML_DIR, 'single', ('AVX2',), None),
+        _Program('raxmlHPC-PTHREADS-AVX2', _RAxML_DIR, 'threads', ('AVX2',), None)
+    ],
+    mr_bayes=[
+        _Program('mr_bayes', _MrBayes_DIR, 'single', ('AVX2',), None),
+        _Program('mr_bayes_mpi', _MrBayes_DIR, 'threads', ('AVX2',), ['mpi/openmpi31-intel-x86_64'])
     ],
 )
 
@@ -134,7 +139,11 @@ class ProgramDescription:
         pass
 
     @staticmethod
-    def files_to_zip():
+    def get_job_additional_params(job_data):
+        pass
+
+    @staticmethod
+    def files_to_zip(job_data):
         raise NotImplementedError(f'Method files_to_zip() is not implemented!')
 
     @staticmethod
@@ -146,3 +155,6 @@ def get_program_desc(program_type):
     if program_type == 'raxml':
         from .raxml import RAxML
         return RAxML
+    if program_type == 'mr_bayes':
+        from .mr_bayes import MrBayes
+        return MrBayes

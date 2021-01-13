@@ -32,7 +32,7 @@ def parse_num_threads(num_threads):
 
 def simple_run_script(program_type, cwd, job_desc,
                       name=None, project=None, email=None,
-                      num_threads=1, simulate=False):
+                      num_threads=1, job_additional_params=None, simulate=False):
     # Check available command lines
     single_cmd = job_desc.get('single')
     threads_cmd = job_desc.get('threads')
@@ -49,15 +49,17 @@ def simple_run_script(program_type, cwd, job_desc,
 
     if program.parallel == 'threads':
         # Run threaded version
-        cmd = threads_cmd.format(num_threads=("$NSLOTS" if max_num_threads > 1 else 1))
+        cmd = threads_cmd.format(num_threads=("$NSLOTS" if max_num_threads > 1 else 1), exe=program.program)
     else:
-        cmd = single_cmd
+        cmd = single_cmd.format(exe=program.program)
     assert cmd
 
     #
     script = make_script(program_type, program.program + ' ' + cmd, queue.queue,
                          name=name, project=project, email=email,
                          num_threads=(num_threads if max_num_threads > 1 else None),
+                         load_modules=program.modules,
+                         job_additional_params=job_additional_params,
                          env_path=program.directory)
 
     write_str_in_file(os.path.join(cwd, 'job_script'), script)
@@ -73,7 +75,7 @@ def simple_run_script(program_type, cwd, job_desc,
 
 
 def make_script(program_type, cmd, queue, name=None, project=None, email=None, num_threads=None,
-                env_path=None):
+                load_modules=None, job_additional_params=None, env_path=None):
     # https://wiki.srce.hr/display/RKI/Pokretanje+i+upravljanje+poslovima#Pokretanjeiupravljanjeposlovima-Resursi
     script = '#!/bin/bash\n\n'
     for val, flag in ((name, 'N'), (project, 'P'), (num_threads, 'pe *mpisingle'), (queue, 'q')):
@@ -100,9 +102,18 @@ export PATH={_ISABELLA_BIN_DIR}:$PATH
         elif isinstance(env_path, (list, tuple)):
             script += f"export PATH={';'.join(os.path.abspath(p) for p in env_path)}:$PATH\n"
 
+    if load_modules:
+        for m in load_modules:
+            script += f"module load {m}\n"
+
+    if job_additional_params:
+        jap = f' "{":".join(f"{k}={v}" for k, v in job_additional_params.items())}"'
+    else:
+        jap = ''
+
     script += f"""
 # Run script
-job_pre_run.py {program_type}
+job_pre_run.py {program_type}{jap}
 {cmd}
 job_post_run.py
 """

@@ -17,7 +17,7 @@ class RAxML:
         return simple_run_script
 
     @staticmethod
-    def files_to_zip():
+    def files_to_zip(job_data):
         return ('RAxML_bestTree.raxml_output', 'RAxML_bipartitionsBranchLabels.raxml_output',
                 'RAxML_bipartitions.raxml_output', 'RAxML_bootstrap.raxml_output', 'RAxML_info.raxml_output'),
 
