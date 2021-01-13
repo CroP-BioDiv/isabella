@@ -134,7 +134,7 @@ class Processing:
         os.chdir(prev_cwd)
 
     # Meils
-    def send_pre_email():
+    def send_pre_email(self):
         if not self.is_processing():
             return
         if 'mail_send' in self.data:

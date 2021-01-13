@@ -1,5 +1,7 @@
+from .environment_desc import ProgramDescription
 
-class MrBayes:
+
+class MrBayes(ProgramDescription):
     @staticmethod
     def create_scripts_method():
         from .utils import simple_run_script

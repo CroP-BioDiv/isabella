@@ -10,7 +10,7 @@ _bootstrap_iteration = re.compile(r'^Bootstrap\[(\d+)\]')
 _overall_time = re.compile(r'Rapid Bootstraps (\d+)')  # Take only seconds
 
 
-class RAxML:
+class RAxML(ProgramDescription):
     @staticmethod
     def create_scripts_method():
         from .utils import simple_run_script
