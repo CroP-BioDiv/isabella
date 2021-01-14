@@ -44,8 +44,8 @@ class RAxML(ProgramDescription):
                 if m:
                     seconds = lasted_seconds(int(m.group(1)))
                     if f_ml:
-                        return f"bootstrap time {seconds}, {f_ml}"
-                    return f"bootstrap time {seconds}"
+                        return f"bootstrap {seconds}, {f_ml}"
+                    return f"bootstrap {seconds}"
 
                 m = _fast_ml.search(line)
                 if m:
