@@ -7,9 +7,11 @@ from .environment_desc import ProgramDescription, lasted_seconds
 # Bootstrap[995]: Time 125.459517 seconds, bootstrap likelihood -1151493.001498, best rearrangement setting 9
 # Overall Time for 1000 Rapid Bootstraps 119924.468086 seconds
 # Fast ML search Time: 56163.194389 seconds
+# Slow ML search Time: 7035.182726 seconds
 _bootstrap_iteration = re.compile(r'^Bootstrap\[(\d+)\]')
 _overall_time = re.compile(r'Rapid Bootstraps (\d+)')  # Take only seconds
 _fast_ml = re.compile(r'^Fast ML search Time: (\d+)')  # Take only seconds
+_slow_ml = re.compile(r'^Slow ML search Time: (\d+)')  # Take only seconds
 
 
 class RAxML(ProgramDescription):
@@ -50,4 +52,8 @@ class RAxML(ProgramDescription):
                 m = _fast_ml.search(line)
                 if m:
                     f_ml = f"Fast ML {lasted_seconds(int(m.group(1)))}"
+
+                m = _slow_ml.search(line)
+                if m:
+                    return f"Slow ML {lasted_seconds(int(m.group(1)))}"
         return ''
