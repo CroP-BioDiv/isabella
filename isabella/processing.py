@@ -25,8 +25,9 @@ def check_is_directory_processing():
 
 def read_job_data(cwd=None):
     p_file = os.path.join(cwd, JOB_FILENAME) if cwd else JOB_FILENAME
-    with open(p_file, 'r') as _in:
-        return dict(tuple(x.strip() for x in l.split(':', 1)) for l in _in)
+    if os.path.isfile(p_file):
+        with open(p_file, 'r') as _in:
+            return dict(tuple(x.strip() for x in l.split(':', 1)) for l in _in)
 
 
 def lasted_str(started, ended):
@@ -103,6 +104,9 @@ class Processing:
     def print_status(self):
         now = str(datetime.now())
         for j_dir, job_data in self.job_directories_with_data():
+            if not job_data:
+                print(f"{j_dir}: Not started yet")
+                continue
             # Vrijeme
             ended = job_data.get('ended')
             lasted = lasted_str(job_data['started'], ended or now)
